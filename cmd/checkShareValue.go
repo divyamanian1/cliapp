@@ -53,7 +53,7 @@ func checkShareValue() {
 			defer wg.Done()
 			q := quote.GetQuote(s2, appcfg.Apikey)
 			o := pnl.CalculatePL(*q.C, *q.Pc)
-			fmt.Println(o)
+			fmt.Println(s2, o)
 		}()
 	}
 	wg.Wait()
