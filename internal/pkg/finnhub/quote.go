@@ -6,6 +6,8 @@ import (
 	fh "github.com/Finnhub-Stock-API/finnhub-go/v2"
 )
 
+const apikey = "c8musp2ad3id1m4i6irg"
+
 type Quote struct {
 	// Open price of the day
 	O *float32 `json:"o,omitempty"`
@@ -23,32 +25,38 @@ type Quote struct {
 	Dp *float32 `json:"dp,omitempty"`
 }
 
-func GetQuote(sym string, apikey string) (Quote, error) {
+func GetQuote(sym string) (Quote, error) {
 	var (
 		q   fh.Quote
 		err error
 		q2  Quote
 	)
+
 	cfg := fh.NewConfiguration()
 	cfg.AddDefaultHeader("X-Finnhub-Token", apikey)
 	finnhubClient := fh.NewAPIClient(cfg).DefaultApi
-
 	q, _, err = finnhubClient.Quote(context.Background()).Symbol(sym).Execute()
+
 	if err != nil {
-		q2.C = nil
-		q2.Pc = nil
-		q2.D = nil
-		q2.Dp = nil
-		q2.H = nil
-		q2.L = nil
-		q2.O = nil
+		q2 = Quote{
+			C:  nil,
+			Pc: nil,
+			D:  nil,
+			Dp: nil,
+			H:  nil,
+			L:  nil,
+			O:  nil,
+		}
 	}
-	q2.C = q.C
-	q2.Pc = q.Pc
-	q2.D = q.D
-	q2.Dp = q.Dp
-	q2.H = q.H
-	q2.L = q.L
-	q2.O = q.O
+	q2 = Quote{
+		C:  q.C,
+		Pc: q.Pc,
+		D:  q.D,
+		Dp: q.Dp,
+		H:  q.H,
+		L:  q.L,
+		O:  q.O,
+	}
+
 	return q2, err
 }

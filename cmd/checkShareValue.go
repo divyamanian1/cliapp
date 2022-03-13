@@ -7,9 +7,7 @@ package cmd
 import (
 	pnl "cliapp/internal/app/calculations"
 	"cliapp/internal/app/quote"
-	"cliapp/internal/pkg/config"
 	"fmt"
-	"os"
 	"sync"
 
 	"github.com/spf13/cobra"
@@ -21,7 +19,7 @@ var checkShareValueCmd = &cobra.Command{
 	Short: "A brief description of your command",
 	Long:  `Check Share Values and compare`,
 	Run: func(cmd *cobra.Command, args []string) {
-		checkShareValue()
+		checkShareValue(args)
 	},
 }
 
@@ -29,16 +27,7 @@ func init() {
 	rootCmd.AddCommand(checkShareValueCmd)
 }
 
-func checkShareValue() {
-	var (
-		appcfg config.Config
-		err    error
-	)
-	//hardcoded config file for now, flag with default ideal
-	if appcfg, err = config.LoadFile("config/config.json"); err != nil {
-		fmt.Println("unable to load config")
-		os.Exit(1)
-	}
+func checkShareValue(args []string) {
 
 	//Foreach share
 	// check the value of C and PC and get the difference
@@ -46,12 +35,16 @@ func checkShareValue() {
 	// output the value
 
 	var wg sync.WaitGroup
-	for _, s := range appcfg.Shares {
+	if len(args) == 0 {
+		args = []string{"MSFT", "AAPL"}
+	}
+
+	for _, s := range args {
 		wg.Add(1)
 		s2 := s
 		go func() {
 			defer wg.Done()
-			q := quote.GetQuote(s2, appcfg.Apikey)
+			q := quote.GetQuote(s2)
 			o := pnl.CalculatePL(*q.C, *q.Pc)
 			fmt.Println(s2, o)
 		}()

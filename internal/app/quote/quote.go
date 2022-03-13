@@ -14,18 +14,19 @@ type Quote struct {
 	Pc *float32 `json:"pc,omitempty"`
 }
 
-func GetQuote(sym string, apikey string) Quote {
+func GetQuote(sym string) Quote {
 	var (
 		q    finnhub.Quote
 		e    error
 		appq Quote
 	)
-	q, e = finnhub.GetQuote(sym, apikey)
+	q, e = finnhub.GetQuote(sym)
 	if e != nil {
 		appq.C = nil
 		appq.Pc = nil
 	}
 	appq.C = q.C
 	appq.Pc = q.Pc
+
 	return appq
 }

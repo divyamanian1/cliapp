@@ -7,8 +7,7 @@ import (
 
 func TestGetQuote(t *testing.T) {
 	type args struct {
-		sym    string
-		apikey string
+		sym string
 	}
 	tests := []struct {
 		name string
@@ -16,20 +15,19 @@ func TestGetQuote(t *testing.T) {
 		want Quote
 	}{
 		{
-			name: "Incorrect API Key",
+			name: "Unsuccessful",
 			args: args{
-				sym:    "AAPL",
-				apikey: "asd",
+				sym: "9",
 			},
 			want: Quote{
-				C:  nil,
-				Pc: nil,
+				C:  new(float32),
+				Pc: new(float32),
 			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := GetQuote(tt.args.sym, tt.args.apikey); !reflect.DeepEqual(got, tt.want) {
+			if got := GetQuote(tt.args.sym); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("GetQuote() = %v, want %v", got, tt.want)
 			}
 		})
