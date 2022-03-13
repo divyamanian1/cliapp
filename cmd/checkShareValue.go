@@ -10,6 +10,7 @@ import (
 	"cliapp/internal/pkg/config"
 	"fmt"
 	"os"
+	"sync"
 
 	"github.com/spf13/cobra"
 )
@@ -44,9 +45,16 @@ func checkShareValue() {
 	// multiply by 10 for 10 shares
 	// output the value
 
+	var wg sync.WaitGroup
 	for _, s := range appcfg.Shares {
-		q := quote.GetQuote(s, appcfg.Apikey)
-		o := pnl.CalculatePL(*q.C, *q.Pc)
-		fmt.Println(s, o)
+		wg.Add(1)
+		s2 := s
+		go func() {
+			defer wg.Done()
+			q := quote.GetQuote(s2, appcfg.Apikey)
+			o := pnl.CalculatePL(*q.C, *q.Pc)
+			fmt.Println(o)
+		}()
 	}
+	wg.Wait()
 }
