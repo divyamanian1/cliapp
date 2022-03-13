@@ -13,7 +13,10 @@ App uses the Cobra Plugin to implement a CLI
 Number of shares = 10
 Shares of only AAPL and MSFT
 These values live in the config for the test
-Config file path is hardcoded, best to give it in as a flag, with a default in case it is not given
 
+# TBD
+1. Config file path is hardcoded, best to give it in as a flag, with a default in case it is 2. not given
+3. Add validation to config file
+4. app/calculations/pnl.go is outputting string, ideally just calculations and another "reporting" interface to convert to useful messages
 
 

@@ -2,7 +2,6 @@ package finnhub
 
 import (
 	"context"
-	"log"
 
 	fh "github.com/Finnhub-Stock-API/finnhub-go/v2"
 )
@@ -36,7 +35,6 @@ func GetQuote(sym string, apikey string) (Quote, error) {
 
 	q, _, err = finnhubClient.Quote(context.Background()).Symbol(sym).Execute()
 	if err != nil {
-		log.Fatalln(err)
 		q2.C = nil
 		q2.Pc = nil
 		q2.D = nil
