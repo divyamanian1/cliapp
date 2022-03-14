@@ -16,6 +16,7 @@ These values live in the config for the test
 
 # TBD
 1. Config file with API key instead of using a constant
+2. Validation on the symbols and their count
 3. Add validation to config file
 4. app/calculations/pnl.go is outputting string, ideally just calculations and another "reporting" interface to convert to useful messages
 
